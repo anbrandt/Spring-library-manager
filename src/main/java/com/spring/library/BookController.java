@@ -15,8 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BookController {
 
-	@Autowired
+
 	private BookService bookService;
+
+	@Autowired
+	public BookController(BookService bookService) {
+		this.bookService = bookService;
+	}
 
 	@RequestMapping("/library")
 	public String libraryStart() {
@@ -34,21 +39,29 @@ public class BookController {
 		return bookService.getAllBooks();
 	}
 
+
 	@RequestMapping("/library/delete/{id}")
 	public void delete(@PathVariable("id") long id) {
 		bookService.delete(id);
 	}
+
+	//TODO delete should return "deleted"
 
 	@RequestMapping("/library/{title}")
 	public Iterable<Book> getByTitle(@PathVariable("title") String title) {
 		return bookService.findByTitle(title);
 	}
 
-	/*@RequestMapping("/library/update/{id}")
-	public Book update(@PathVariable ("id") @RequestBody Book book) {
-			bookService.update(book.setAuthor(), book.setTitle(), book.setBookCategory(););
+	@RequestMapping("/library/update/{id}")
+	public ResponseEntity<Long> update(@PathVariable("id") Long id,  @RequestBody Book book) {
 
-	}*/
+			Book calledBook = new Book(book.getTitle(), book.getAuthor(), book.getIsbn(), book.getBookCategory());
+			calledBook.setId(id);
+
+			Book updatedBook = bookService.update(calledBook);
+
+			return new ResponseEntity<>(updatedBook.getId(), HttpStatus.CREATED);
+	}
 
 
 

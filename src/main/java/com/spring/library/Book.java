@@ -68,4 +68,8 @@ public class Book {
 	public String getBookCategory() {
 		return bookCategory;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

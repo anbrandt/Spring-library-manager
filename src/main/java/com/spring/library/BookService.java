@@ -20,7 +20,6 @@ public class BookService {
 
 	public Book create(String title, String author, String isbn, String bookCategory) {
 		Book book = new Book(title, author, isbn, bookCategory);
-
 		return libraryRepository.save(book);
 	}
 
